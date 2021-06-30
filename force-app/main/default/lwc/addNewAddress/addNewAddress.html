@@ -1,0 +1,21 @@
+<template>
+    <div style="background-color: rgb(242, 242, 242)">
+        <div class="slds-var-p-around_medium">
+            <lightning-button-icon icon-name="utility:chevronup" variant="container" onclick={formHandlerUp}>
+            </lightning-button-icon>
+            <lightning-button-icon icon-name="utility:chevrondown" variant="container" class="slds-var-m-left_xx-small"
+                onclick={formHandlerDown}></lightning-button-icon>
+        </div>
+        <template if:true={formHandler}>
+            <div class="slds-var-p-around_medium">
+                <strong class="slds-align_absolute-center">
+                    <h1>Enter the details:</h1> 
+                </strong>
+                <div>
+                    <lightning-record-form object-api-name={objApiName} fields={fieldArray}>
+                    </lightning-record-form>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

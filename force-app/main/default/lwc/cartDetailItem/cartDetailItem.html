@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-4 slds-var-m-top_small">
+            {cartItem.Beer__r.Name}
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-var-m-top_small">
+            <lightning-formatted-number value={cartItem.Item_Amount__c} format-style="currency" currency-code="INR" minimum-fraction-digits="2" maximum-fraction-digits="2"></lightning-formatted-number>            
+        </div>
+        <div class="slds-col slds-size_1-of-4 ">
+            <lightning-input type="number" value={cartItem.Item_Quantity__c} min="1" step="1"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-4 slds-var-m-top_small slds-p-left_x-large">
+            <lightning-button label="Delete" variant="destructive" icon-name="action:delete" onclick={deleteCartItemHandler}></lightning-button>
+        </div>
+    </div>
+</template>

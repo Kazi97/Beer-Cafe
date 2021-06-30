@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Choose any one option from below">
+        <div class="slds-var-m-around_medium">
+            <lightning-radio-group options={options} value={value} type="radio" onchange={itemDeliveryHandler}>
+            </lightning-radio-group>
+        </div>
+        <div class="slds-var-m-around_medium">
+            <template if:true={takeAway}>
+                <lightning-input type='text' onkeyup={customerDetailHandler} placeholder="Enter Customer name or Phone">
+                </lightning-input>
+            </template>
+            <template if:true={dineIn}>
+                You choose dine In.
+                Feature Comming soon
+            </template>
+        </div>
+    </lightning-card>
+</template>

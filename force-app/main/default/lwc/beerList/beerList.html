@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Search your Beer">
+        <div class="slds-var-m-around_medium">
+            <lightning-layout>
+                <lightning-layout-item size=9>
+                    <c-beer-search onbeersearch={beerSearchHandler}></c-beer-search>
+                </lightning-layout-item>
+                <lightning-layout-item size=3>
+                    <lightning-button variant="natural" onclick={navigateToCartDetail} label={itemCount}
+                        icon-name="utility:checkout" class="slds-float_right slds-var-m-top_small "></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="Matching Results: ">
+        <div class="slds-var-m-around_medium">
+            <template if:true={beerData}>
+                <strong>Found: {count}</strong></br>
+                <div class="slds-grid slds-wrap">
+                    <template for:each={beerDetails} for:item="beer">
+                        <div key={beer.Id} class="slds-box slds-col slds-size_1-of-4">
+                            <c-beer-tile beer-detail={beer} onbeeraddtocart={beerAddToCartHandler}></c-beer-tile>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

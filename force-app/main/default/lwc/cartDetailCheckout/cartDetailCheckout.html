@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Checkout" icon-name="utility:cart">
+        <div class="slds-var-m-around_medium">
+            <strong>Total Amount: </strong>
+            <lightning-formatted-number value={totalPrice} format-style="currency" currency-code="INR" minimum-fraction-digits="2" maximum-fraction-digits="2"></lightning-formatted-number>   
+        </div>
+        <div>
+            Apply Coupon?<a href="JavaScript:void(0);" onclick={couponFieldHandler}>Click Here!</a>
+        </div>
+        <template if:true={couponField}>
+            <div>
+                <lightning-input placeholder="Enter your coupon code" onchange={couponCodeHandler}></lightning-input></br>
+                <lightning-button variant="neutral" label="Apply" onclick={applyCouponHandler}></lightning-button>
+                &nbsp;&nbsp;{couponAppliedMessage}
+            </div>
+        </template>
+        <div class="slds-var-m-around_medium">
+        <footer class="slds-card__footer slds-clearfix">
+            <lightning-button variant="natural" label="Continue Shopping" class="slds-float_left"
+                onclick={continueShoppingHandler}></lightning-button>
+            <lightning-button variant="success" label="Place Order" class="slds-float_right" onclick={placeOrderHandler}>
+            </lightning-button>
+        </footer>
+        </div>
+    </lightning-card>
+</template>

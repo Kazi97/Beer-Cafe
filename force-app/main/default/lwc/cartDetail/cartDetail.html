@@ -1,0 +1,152 @@
+<template>
+    <lightning-card title="Cart Details" icon-name="utility:cart">
+        <lightning-layout multiple-rows="true" class="slds-var-m-around_medium">
+            <lightning-layout-item size=9 class="slds-box">
+                <strong>Total Items: &nbsp;</strong>{itemCount}
+
+                <template if:true={cartItemData}>
+                    <div class="slds-var-m-around_medium">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Item Name</strong>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Price</strong>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Quantity</strong>
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+
+                            </div>
+                        </div>
+                        <!-- <template if:true={cartItemData}> -->
+                        <template for:each={cartItems} for:item="item">
+                            <c-cart-detail-item cart-item={item} key={item.Id} ondelete={deleteCartItem}>
+                            </c-cart-detail-item>
+                        </template>
+                        <!-- </template> -->
+                    </div>
+                </template>
+
+                <!-- <template if:false={cartItemData}>
+                    There is no item in your Cart.
+                </template> -->
+
+                <template if:true={placeOrder}>
+                    <div class="slds-var-m-around_medium">
+                        <c-place-order-detail ontakeaway={takeAwayHandler} ondinein={dineInHandler}>
+                        </c-place-order-detail>
+
+                        <!-- if user selects takeaway option -->
+                        <template if:true={takeAway}>
+                            <!-- displaying the customer's address if available -->
+                            <template if:true={addDetail}>
+                                <div class="slds-grid slds-wrap">
+                                    <template for:each={address} for:item="addr">
+                                        <div class="slds-box slds-col slds-size_1-of-3" key={addr.Id}>
+                                            <lightning-layout>
+                                                <lightning-layout-item size=6>
+                                                    <lightning-formatted-text value={addr.Customer_Detail__c}>
+                                                    </lightning-formatted-text>
+                                                    <lightning-formatted-address street={addr.Street__c}
+                                                        city={addr.City__c} country={addr.Country__c}
+                                                        province={addr.State__c} postal-code={addr.Postal_Code__c}>
+                                                    </lightning-formatted-address>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size=6>
+                                                    <lightning-button label="Deliver Here" onclick={deliverHandler}
+                                                        variant="success"
+                                                        class="slds-float_right slds-var-m-bottom_medium"
+                                                        value={addr.Id}></lightning-button>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-var-m-around_medium">
+                                    <lightning-button variant="brand" label="Add New Address"
+                                        onclick={addNewAddressHandler}></lightning-button>
+                                </div>
+                                <template if:true={addNewAddress}>
+                                    <div class="slds-var-m-around_medium slds-box">
+                                        <c-add-new-address></c-add-new-address>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <!-- if address not available ask for option to add new address -->
+                            <template if:false={addDetail}>
+                                <div class="slds-var-m-around_medium">
+                                    <strong>No data found</strong>
+                                </div>
+                                </br></br>
+                                <div class="slds-var-m-around_medium slds-box">
+                                    <lightning-button variant="brand" label="Add New Address"
+                                        onclick={addNewAddressHandler}></lightning-button>
+                                    </br></br>
+                                    <template if:true={addNewAddress}>
+                                        <div class="slds-var-m-around_medium">
+                                            <c-add-new-address></c-add-new-address>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:true={dinIn}>
+                            option comming soon
+                        </template>
+
+                        <template if:true={emptyCart}>
+                            <div class="slds-var-m-around_medium">
+                                <div class="slds-box">
+                                    <h1>Your Cart is Empty. Thank You for Shopping</h1>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </lightning-layout-item>
+
+            <lightning-layout-item size=3 class="slds-box">
+                <template if:true={checkout}>
+                    <div class="slds-var-m-around_medium slds-box">
+                        <c-cart-detail-checkout total-price={totalAmount} onapplycoupon={couponHandler}
+                            coupon-applied-message={couponAppliedMessage} onplaceorder={placeOrderHandler}>
+                        </c-cart-detail-checkout>
+                    </div>
+                    <div>
+                        <template if:true={selectAddress}>
+                            <strong>Your item will be delivered here:</strong>
+                            <div class="slds-var-m-around_medium slds-box">
+                                <lightning-record-view-form record-id={selectedDeliveryAddressId} object-api-name="Address_Book__c">
+                                    <lightning-layout>
+                                        <lightning-layout-item size="6">
+                                            <lightning-output-field field-name="Customer_Detail__c"></lightning-output-field>
+                                            <lightning-output-field field-name="Street__c"></lightning-output-field>
+                                            <lightning-output-field field-name="City__c"></lightning-output-field>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <lightning-output-field field-name="State__c"></lightning-output-field>
+                                            <lightning-output-field field-name="Postal_Code__c"></lightning-output-field>
+                                            <lightning-output-field field-name="Country__c"></lightning-output-field>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </lightning-record-view-form>
+                                <div class="slds-align_absolute-center">
+                                    <lightning-button variant="success" label="Check Out" onclick={checkOutHandler}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:false={selectAddress}>
+                            <strong>You have not selected any address.</strong>
+                        </template>
+                    </div>
+                </template>
+            </lightning-layout-item>
+        </lightning-layout>
+
+    </lightning-card>
+    <!-- <lightning-button label="test" onclick={testHandler}></lightning-button> -->
+</template>
